@@ -1,0 +1,112 @@
+-------------------------create user------------------------------
+
+        User user = new User();
+        user.setName("Pranav");
+        user.setCity("Nagpur");
+        user.setStatus("I am java developer");
+
+        User use = userRepository.save(user);
+        System.out.println(use);
+
+        User user1 = new User();
+        user1.setName("Himanshu");
+        user1.setCity("Nagpur");
+        user1.setStatus("I am civil engineer");
+
+        User use1 = userRepository.save(user1);
+        System.out.println(use1);
+
+
+-------------------------AddMultipleusers-------------------------
+
+	List<User> users = List.of(use1,use);
+        //Save multiple Objects
+        Iterable<User> result = userRepository.saveAll(users);
+        result.forEach(userss-> System.out.println(userss));
+
+-------------------------UpdateUser-------------------------------
+
+	Optional<User> optional = userRepository.findById(6);
+        User user = optional.get();
+        user.setName("Sonal");
+        userRepository.save(user);
+        System.out.println(user);
+
+
+-------------------------FindAll-------------------------------
+
+        Iterable<User> itr = userRepository.findAll();
+        //1stway
+        Iterator<User> iterator = itr.iterator();
+        while (iterator.hasNext()) {
+            User user = iterator.next();
+            System.out.println(user);
+        }
+        //2ndway using lambda
+        itr.forEach(user -> System.out.println(user));
+
+
+-------------------------delete--------------------------------
+        userRepository.deleteById(2);
+        System.out.println("deleted");
+
+
+-------------------------deleteall-----------------------------
+
+        Iterable<User> allusers = userRepository.findAll();
+        allusers.forEach(user -> System.out.println(user));
+        userRepository.deleteAll(allusers);
+
+-------------------------findbyname----------------------------
+		(  RepositoryImplementation: 
+ 		List<User> findByName(String name);)
+
+        List<User> users = userRepository.findByName("Sparsh");
+        users.forEach(user -> System.out.println(user));
+
+--------------------------findbynameandcity--------------------
+		(  RepositoryImplementation: 
+ 	List<User> findByNameAndCity(String name,String city);)
+
+        List<User> user = userRepository.findByNameAndCity("Sparsh", "Nagpur");
+        user.forEach(e -> System.out.println(e)); 
+
+------------------------------Query(getAllUser)----------------------------
+
+  		(RepositoryImplementation:
+		@Query("select u FROM User u")
+     		public List<User> getAllUser();)
+
+        List<User> allUser = userRepository.getAllUser();
+        allUser.forEach(System.out::println);  
+
+------------------------------Query(getUserByName)-----------------------------  
+
+  		 (RepositoryImplementation:
+		 @Query("select u FROM User u WHERE u.name =:n")
+     		public List<User> getUserByName(@Param("n") String name);)
+
+ 		List<User> allUser = userRepository.getUserByName("Sparsh");
+        	allUser.forEach(System.out::println);
+
+------------------------------Query(getUserByNameAndCity)---------------------
+
+			(RepositoryImplementation:
+		 @Query("select u FROM User u WHERE u.name =:n and u.city=:c")
+     public List<User> getUserByNameAndCity(@Param("n") String name,@Param("c") String city);)
+
+
+	List<User> allUsers = userRepository.getUserByNameAndCity("Sparsh","Nagpur");
+        allUsers.forEach(System.out::println);
+
+------------------------------Query(getUserByNameAndCity)----------------------
+
+
+		(RepositoryImplementation:
+ 		@Query(value = "select * from User", nativeQuery = true)
+     		public List<User> getUser();)
+
+ 		List<User> allUser = userRepository.getAllUser();
+        	allUser.forEach(System.out::println);
+
+-------------------------------------------------------------------------------
